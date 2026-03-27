@@ -1,3 +1,5 @@
+<div  [class.red]="counterService.counter >= 10"
+  [class.green]="counterService.counter <= -10">
 <h1>CounterNest :</h1>
   <h1>{{ counterService.counter }}</h1>
 
@@ -10,3 +12,4 @@
 <hr />
 
 <router-outlet></router-outlet>
+</div>
