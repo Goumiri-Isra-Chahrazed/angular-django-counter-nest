@@ -14,7 +14,9 @@ export class Counter {
   decrement() {
     this.counter -= 1;
   }
-
+ reset() {
+  this.counter= 0;
+ }
 
 
 

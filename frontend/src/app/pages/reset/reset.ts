@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Counter } from '../../services/counter';
 
 @Component({
   selector: 'app-reset',
@@ -6,4 +7,9 @@ import { Component } from '@angular/core';
   templateUrl: './reset.html',
   styleUrl: './reset.css',
 })
-export class Reset {}
+export class Reset {
+   counterService = inject(Counter)
+   reset(){
+    this.counterService.reset();
+   }
+}
