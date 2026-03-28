@@ -25,6 +25,6 @@ import { FormsModule } from '@angular/forms';
 export class App {
   protected readonly title = signal('CounterNest Application');
     counterService = inject(CounterService);
-    isTestMode = true;
+    isTestMode = false;
 
 }
