@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'api',
-    'django_celery_beat'
+    'django_celery_beat',
+    'corsheaders'
 ]
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
@@ -49,6 +50,7 @@ CELERY_TASK_SERIALIZER = 'json'
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,6 +60,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+]
 ROOT_URLCONF = 'counternest.urls'
 
 TEMPLATES = [
