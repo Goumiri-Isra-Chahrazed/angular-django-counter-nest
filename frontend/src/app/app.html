@@ -12,4 +12,14 @@
 <hr />
 
 <router-outlet></router-outlet>
+
+<hr/>
+@if (isTestMode) {
+  <div style="margin-top: 20px;">
+    <input type="number" #testValue placeholder="Enter value (e.g. 77000)" />
+    <button (click)="counterService.jumpTo(testValue.valueAsNumber)">
+      Jump To
+    </button>
+  </div>
+}
 </div>

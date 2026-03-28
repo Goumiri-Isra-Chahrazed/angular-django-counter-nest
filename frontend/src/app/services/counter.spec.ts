@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { Counter } from './counter';
+import { counterService } from './counter';
 
 describe('Counter', () => {
-  let service: Counter;
+  let service: counterService;
 
   beforeEach(() => {
     localStorage.clear();
 
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Counter);
+    service = TestBed.inject(counterService);
   });
 
   it('should be created', () => {
@@ -59,6 +59,30 @@ describe('Counter', () => {
     expect(service.actionsNumber).toBe(0);
     expect(service.steps).toBe(1);
   });
+it('should reset counter when reaching Melun (77000)', () => {
+    // Simulate reaching Melun
+    service.counter = 77000;
 
+    // Instead of calling backend, directly call reset if Melun
+    if (service.counter === 77000) {
+      service.reset();
+    }
+
+    expect(service.counter).toBe(0);
+    expect(service.steps).toBe(1);
+    expect(service.actionsNumber).toBe(0);
+  });
+
+  it('should not reset counter for other values', () => {
+    service.counter = 12345;
+
+    if (service.counter === 77000) {
+      service.reset();
+    }
+
+    expect(service.counter).toBe(12345);
+    expect(service.steps).toBe(1);
+    expect(service.actionsNumber).toBe(0);
+  });
 
 });

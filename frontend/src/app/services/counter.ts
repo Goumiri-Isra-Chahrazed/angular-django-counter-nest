@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, isDevMode } from '@angular/core';
+import { CommuneService } from './commune';
 
 @Injectable({
   providedIn: 'root',
 })
-export class Counter {
+export class counterService {
   counter = 0;
   actionsNumber = 0;
   steps = 1;
-
+  communeService = inject(CommuneService);
   constructor() {
     this.load(); // Load from localStorage on service creation
   }
@@ -17,6 +18,7 @@ export class Counter {
     this.counter += this.steps;
     this.updateStep();
     this.save();
+    this.checkMelunReset();
   }
 
   decrement() {
@@ -24,6 +26,7 @@ export class Counter {
     this.counter -= this.steps;
     this.updateStep();
     this.save();
+    this.checkMelunReset();
   }
 
   reset() {
@@ -38,6 +41,16 @@ export class Counter {
       this.steps *= 2;
     }
   }
+
+checkMelunReset() {
+  if (this.counter === 77000) {
+    this.communeService.checkPostcode('77000').subscribe(res => {
+      if (res.exists) {
+        this.reset();
+      }
+    });
+  }
+}
 
 
   private save() {
@@ -59,5 +72,9 @@ export class Counter {
     this.counter = state.counter ?? 0;
     this.actionsNumber = state.actionsNumber ?? 0;
     this.steps = state.steps ?? 1;
+  }
+  jumpTo(value: number) {
+    this.counter = value;
+    this.checkMelunReset(); // trigger backend check
   }
 }

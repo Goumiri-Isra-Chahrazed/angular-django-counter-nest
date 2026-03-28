@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Counter } from '../../services/counter';
+import { counterService } from '../../services/counter';
 
 @Component({
   selector: 'app-up',
@@ -8,7 +8,7 @@ import { Counter } from '../../services/counter';
   styleUrl: './up.css',
 })
 export class Up {
-    counterService = inject(Counter);
+    counterService = inject(counterService);
 
   increase() {
     this.counterService.increment();

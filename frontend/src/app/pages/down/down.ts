@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Counter } from '../../services/counter';
+import { counterService } from '../../services/counter';
 
 @Component({
   selector: 'app-down',
@@ -8,7 +8,7 @@ import { Counter } from '../../services/counter';
   styleUrl: './down.css',
 })
 export class Down {
-   counterService = inject(Counter);
+   counterService = inject(counterService);
 
      decrement() {
     this.counterService.decrement();
