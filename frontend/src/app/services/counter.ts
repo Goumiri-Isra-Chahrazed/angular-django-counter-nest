@@ -1,65 +1,69 @@
-import { inject, Injectable, isDevMode } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { signal } from '@angular/core';
 import { CommuneService } from './commune';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class counterService {
-  counter = 0;
-  actionsNumber = 0;
-  steps = 1;
+export class CounterService {
+  counter = signal(0);
+  actionsNumber = signal(0);
+  steps = signal(1);
+
   communeService = inject(CommuneService);
+
   constructor() {
-    this.load(); // Load from localStorage on service creation
+    this.load();
   }
 
   increment() {
-    this.actionsNumber++;
-    this.counter += this.steps;
+    this.actionsNumber.update(n => n + 1);
+    this.counter.update(c => c + this.steps());
     this.updateStep();
-    this.save();
     this.checkMelunReset();
+    this.save();
   }
 
   decrement() {
-    this.actionsNumber++;
-    this.counter -= this.steps;
+    this.actionsNumber.update(n => n + 1);
+    this.counter.update(c => c - this.steps());
     this.updateStep();
-    this.save();
     this.checkMelunReset();
+    this.save();
   }
 
   reset() {
-    this.counter = 0;
-    this.actionsNumber = 0;
-    this.steps = 1;
+    this.counter.set(0);
+    this.actionsNumber.set(0);
+    this.steps.set(1);
     this.save();
   }
 
   private updateStep() {
-    if (this.actionsNumber % 30 === 0) {
-      this.steps *= 2;
+    if (this.actionsNumber() % 30 === 0) {
+      this.steps.update(s => s * 2);
     }
   }
 
-checkMelunReset() {
-  if (this.counter === 77000) {
-    this.communeService.checkPostcode('77000').subscribe(res => {
+  private async checkMelunReset() {
+    if (this.counter() === 77000) {
+      const res = await firstValueFrom(
+        this.communeService.checkPostcode('77000')
+      );
       if (res.exists) {
         this.reset();
       }
-    });
+    }
   }
-}
-
 
   private save() {
     localStorage.setItem(
       'counterState',
       JSON.stringify({
-        counter: this.counter,
-        actionsNumber: this.actionsNumber,
-        steps: this.steps,
+        counter: this.counter(),
+        actionsNumber: this.actionsNumber(),
+        steps: this.steps(),
       })
     );
   }
@@ -69,12 +73,13 @@ checkMelunReset() {
     if (!data) return;
 
     const state = JSON.parse(data);
-    this.counter = state.counter ?? 0;
-    this.actionsNumber = state.actionsNumber ?? 0;
-    this.steps = state.steps ?? 1;
+    this.counter.set(state.counter ?? 0);
+    this.actionsNumber.set(state.actionsNumber ?? 0);
+    this.steps.set(state.steps ?? 1);
   }
+
   jumpTo(value: number) {
-    this.counter = value;
+    this.counter.set(value);
     this.checkMelunReset(); // trigger backend check
   }
 }

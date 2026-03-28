@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { counterService } from './services/counter';
+import { CounterService } from './services/counter';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import { counterService } from './services/counter';
 })
 export class App {
   protected readonly title = signal('CounterNest Application');
-    counterService = inject(counterService);
+    counterService = inject(CounterService);
     isTestMode = true;
 
 }

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { Commune } from '../models/commune';
 import { CommuneService } from './commune';
 import { environment } from '../../environments/environment';
@@ -7,13 +7,14 @@ import { environment } from '../../environments/environment';
 describe('CommuneService', () => {
   let service: CommuneService;
   let httpMock: HttpTestingController;
-  const baseUrl = `${environment.apiUrl}`;
-
+  const baseUrl = environment.apiUrl;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [CommuneService]
+      providers: [
+        CommuneService,
+        provideHttpClientTesting(),
+      ],
     });
 
     service = TestBed.inject(CommuneService);
@@ -31,15 +32,15 @@ describe('CommuneService', () => {
   it('getCommunes() should return a list of communes', () => {
     const mockCommunes: Commune[] = [
       { name: 'Paris', postcode: '75001' },
-      { name: 'Melun', postcode: '77000' }
+      { name: 'Melun', postcode: '77000' },
     ];
 
-    service.getCommunes().subscribe(data => {
+    service.getCommunes().subscribe((data) => {
       expect(data.length).toBe(2);
       expect(data).toEqual(mockCommunes);
     });
 
-    const req = httpMock.expectOne(`${baseUrl}`);
+    const req = httpMock.expectOne(baseUrl);
     expect(req.request.method).toBe('GET');
     req.flush(mockCommunes);
   });
@@ -48,7 +49,7 @@ describe('CommuneService', () => {
     const postcode = '77000';
     const mockResponse = { exists: true };
 
-    service.checkPostcode(postcode).subscribe(res => {
+    service.checkPostcode(postcode).subscribe((res) => {
       expect(res.exists).toBe(true);
     });
 
@@ -61,7 +62,7 @@ describe('CommuneService', () => {
     const postcode = '12345';
     const mockResponse = { exists: false };
 
-    service.checkPostcode(postcode).subscribe(res => {
+    service.checkPostcode(postcode).subscribe((res) => {
       expect(res.exists).toBe(false);
     });
 

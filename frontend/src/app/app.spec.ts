@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 import { ActivatedRoute } from '@angular/router';
-import { counterService } from './services/counter';
+import { CounterService } from './services/counter';
 
 describe('App', () => {
   beforeEach(async () => {
@@ -9,7 +9,7 @@ describe('App', () => {
       imports: [App],
       providers: [
             { provide: ActivatedRoute, useValue: { snapshot: { params: {} } },
-          counterService }
+          CounterService }
           ]
     }).compileComponents();
   });

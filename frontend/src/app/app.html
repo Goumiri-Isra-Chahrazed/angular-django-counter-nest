@@ -1,25 +1,31 @@
-<div  [class.red]="counterService.counter >= 10"
-  [class.green]="counterService.counter <= -10">
-<h1>CounterNest :</h1>
-  <h1>{{ counterService.counter }}</h1>
+<div
+  [class.red]="counterService.counter() >= 10"
+  [class.green]="counterService.counter() <= -10"
+>
+  <h1>CounterNest :</h1>
+  <h1>{{ counterService.counter() }}</h1>
 
-<nav>
-  <a routerLink="/up">⬆️ Up</a> |
-  <a routerLink="/down">⬇️ Down</a> |
-  <a routerLink="/reset">🔄 Reset</a>
-</nav>
+  <nav>
+    <a routerLink="/up">⬆️ Up</a> |
+    <a routerLink="/down">⬇️ Down</a> |
+    <a routerLink="/reset">🔄 Reset</a>
+  </nav>
 
-<hr />
+  <hr />
 
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 
-<hr/>
-@if (isTestMode) {
-  <div style="margin-top: 20px;">
-    <input type="number" #testValue placeholder="Enter value (e.g. 77000)" />
-    <button (click)="counterService.jumpTo(testValue.valueAsNumber)">
-      Jump To
-    </button>
-  </div>
-}
+  <hr/>
+  @if (isTestMode) {
+    <div style="margin-top: 20px;">
+      <input type="number" #testValue placeholder="Enter value (e.g. 77000)" />
+      <button (click)="counterService.jumpTo(testValue.valueAsNumber)">
+        Jump To
+      </button>
+
+      <!-- show action counter and steps -->
+      <p>Actions: {{ counterService.actionsNumber() }}</p>
+      <p>Current step: {{ counterService.steps() }}</p>
+    </div>
+  }
 </div>
