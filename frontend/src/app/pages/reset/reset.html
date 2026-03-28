@@ -1,2 +1,6 @@
-<input type="date">
-<button (click)="reset()">Reset</button>
+<mat-form-field appearance="fill">
+  <mat-label>Choose date</mat-label>
+  <input matInput type="date" />
+</mat-form-field>
+
+<button mat-raised-button color="accent" (click)="reset()">Reset</button>

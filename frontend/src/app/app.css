@@ -5,3 +5,43 @@
 .green {
   background-color: #27ae60;
 }
+.counter-card {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.red {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.green {
+  background-color: #27ae60;
+  color: white;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.test-mode {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+.test-info {
+  margin-top: 15px;
+  font-weight: 500;
+}

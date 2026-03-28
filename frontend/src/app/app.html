@@ -1,31 +1,49 @@
-<div
-  [class.red]="counterService.counter() >= 10"
-  [class.green]="counterService.counter() <= -10"
+<mat-toolbar color="primary">
+  <span>CounterNest App</span>
+</mat-toolbar>
+
+<mat-card
+  [ngClass]="{
+    red: counterService.counter() >= 10,
+    green: counterService.counter() <= -10
+  }"
+  class="counter-card"
 >
-  <h1>CounterNest :</h1>
+  <h2>Counter:</h2>
   <h1>{{ counterService.counter() }}</h1>
 
-  <nav>
-    <a routerLink="/up">⬆️ Up</a> |
-    <a routerLink="/down">⬇️ Down</a> |
-    <a routerLink="/reset">🔄 Reset</a>
-  </nav>
+  <div class="nav-buttons">
+    <button mat-raised-button color="accent" routerLink="/up">⬆️ Up</button>
+    <button mat-raised-button color="accent" routerLink="/down">⬇️ Down</button>
+    <button mat-raised-button color="warn" routerLink="/reset">🔄 Reset</button>
+  </div>
+</mat-card>
 
-  <hr />
+<mat-divider></mat-divider>
 
-  <router-outlet></router-outlet>
+<router-outlet></router-outlet>
 
-  <hr/>
-  @if (isTestMode) {
-    <div style="margin-top: 20px;">
-      <input type="number" #testValue placeholder="Enter value (e.g. 77000)" />
-      <button (click)="counterService.jumpTo(testValue.valueAsNumber)">
-        Jump To
-      </button>
+<mat-divider></mat-divider>
 
-      <!-- show action counter and steps -->
-      <p>Actions: {{ counterService.actionsNumber() }}</p>
-      <p>Current step: {{ counterService.steps() }}</p>
-    </div>
-  }
+<!-- Test Mode Panel -->
+ @if(isTestMode){
+<div class="test-mode">
+  <mat-form-field appearance="fill">
+    <mat-label>Enter value (e.g., 77000)</mat-label>
+    <input matInput type="number" #testValue />
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="counterService.jumpTo(testValue.valueAsNumber)"
+  >
+    Jump To
+  </button>
+
+  <div class="test-info">
+    <p>Actions: {{ counterService.actionsNumber() }}</p>
+    <p>Current step: {{ counterService.steps() }}</p>
+  </div>
 </div>
+ }
