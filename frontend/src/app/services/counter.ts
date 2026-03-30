@@ -1,7 +1,6 @@
-import { inject, Injectable } from '@angular/core';
-import { signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { CommuneService } from './commune';
-import { firstValueFrom } from 'rxjs';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,25 +10,43 @@ export class CounterService {
   actionsNumber = signal(0);
   steps = signal(1);
 
-  communeService = inject(CommuneService);
+  private communeService = inject(CommuneService);
+
+  private communes = signal<string[]>([]);
 
   constructor() {
     this.load();
+    this.loadCommunes();
+  }
+
+  private loadCommunes() {
+    this.communeService.getCommunes()
+      .pipe(
+        tap(communes => {
+          const postcodes = communes.map(c => c.postcode);
+          this.communes.set(postcodes);
+        })
+      )
+      .subscribe();
   }
 
   increment() {
     this.actionsNumber.update(n => n + 1);
     this.counter.update(c => c + this.steps());
+
     this.updateStep();
     this.checkMelunReset();
+
     this.save();
   }
 
   decrement() {
     this.actionsNumber.update(n => n + 1);
     this.counter.update(c => c - this.steps());
+
     this.updateStep();
     this.checkMelunReset();
+
     this.save();
   }
 
@@ -46,12 +63,10 @@ export class CounterService {
     }
   }
 
-  private async checkMelunReset() {
+  private checkMelunReset() {
     if (this.counter() === 77000) {
-      const res = await firstValueFrom(
-        this.communeService.checkPostcode('77000')
-      );
-      if (res.exists) {
+      const exists = this.communes().includes('77000');
+      if (exists) {
         this.reset();
       }
     }
@@ -80,6 +95,6 @@ export class CounterService {
 
   jumpTo(value: number) {
     this.counter.set(value);
-    this.checkMelunReset(); // trigger backend check
+    this.checkMelunReset();
   }
 }
